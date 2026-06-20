@@ -21,7 +21,11 @@ export function Sidebar() {
       label: "Início",
       path: "/student",
     },
-  ];
+    {
+      label: "Avisos",
+      path: "/student/notices",
+    },
+];
 
   const items = user?.role === "COORDINATOR" ? coordinatorItems : studentItems;
 

@@ -5,49 +5,64 @@ import { RoleRoute } from "../components/routes/RoleRoute";
 import { AppLayout } from "../components/layout/AppLayout";
 
 import { LoginPage } from "../features/auth/pages/LoginPage";
+
 import { CoordinatorHome } from "../features/coordinator/pages/CoordinatorHome";
+
 import { StudentHome } from "../features/student/pages/StudentHome";
+import { StudentNoticesPage } from "../features/student/pages/StudentNoticesPage";
+
 import { UnauthorizedPage } from "../pages/UnauthorizedPage";
+import { AppErrorPage } from "../pages/AppErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/login" replace />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    element: <ProtectedRoute />,
+    errorElement: <AppErrorPage />,
     children: [
       {
-        element: <AppLayout />,
+        index: true,
+        element: <Navigate to="/login" replace />,
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        element: <ProtectedRoute />,
         children: [
           {
-            element: <RoleRoute allowedRoles={["COORDINATOR"]} />,
+            element: <AppLayout />,
             children: [
               {
-                path: "/coordinator",
-                element: <CoordinatorHome />,
+                element: <RoleRoute allowedRoles={["COORDINATOR"]} />,
+                children: [
+                  {
+                    path: "coordinator",
+                    element: <CoordinatorHome />,
+                  },
+                ],
               },
-            ],
-          },
-          {
-            element: <RoleRoute allowedRoles={["STUDENT"]} />,
-            children: [
               {
-                path: "/student",
-                element: <StudentHome />,
+                element: <RoleRoute allowedRoles={["STUDENT"]} />,
+                children: [
+                  {
+                    path: "student",
+                    element: <StudentHome />,
+                  },
+                  {
+                    path: "student/notices",
+                    element: <StudentNoticesPage />,
+                  },
+                ],
               },
             ],
           },
         ],
       },
+      {
+        path: "unauthorized",
+        element: <UnauthorizedPage />,
+      },
     ],
-  },
-  {
-    path: "/unauthorized",
-    element: <UnauthorizedPage />,
   },
 ]);
