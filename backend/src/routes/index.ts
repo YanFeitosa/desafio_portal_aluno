@@ -5,6 +5,7 @@ import { studentRoutes } from "./student.routes";
 import { subjectRoutes } from "./subject.routes";
 import { gradeRoutes } from "./grade.routes";
 import { reportCardRoutes } from "./reportCard.routes";
+import { docsRoutes } from "./docs.routes";
 
 export const routes = Router();
 
@@ -14,3 +15,4 @@ routes.use("/students", studentRoutes);
 routes.use("/subjects", subjectRoutes);
 routes.use("/grades", gradeRoutes);
 routes.use("/report-card", reportCardRoutes);
+routes.use("/docs", docsRoutes);
