@@ -4,6 +4,10 @@ import { swaggerDocument } from "../docs/swagger";
 
 export const docsRoutes = Router();
 
+docsRoutes.get("/json", (_req, res) => {
+  return res.json(swaggerDocument);
+});
+
 docsRoutes.use(
   "/",
   swaggerUi.serve,
@@ -14,7 +18,3 @@ docsRoutes.use(
     },
   })
 );
-
-docsRoutes.get("/json", (_req, res) => {
-  return res.json(swaggerDocument);
-});
