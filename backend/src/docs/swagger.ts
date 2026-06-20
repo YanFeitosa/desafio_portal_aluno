@@ -159,23 +159,23 @@ export const swaggerDocument = {
     },
 
     "/auth/me": {
-      get: {
-        tags: ["Auth"],
-        summary: "Usuário autenticado",
-        description:
-          "Retorna os dados básicos do usuário autenticado.\n\n**Perfis:** Coordenação e Aluno.",
-        security: [{ bearerAuth: [] }],
-        "x-roles": ["COORDINATOR", "STUDENT"],
-        responses: {
-          "200": {
-            description: "Usuário autenticado.",
-          },
-          "401": {
-            description: "Token ausente, inválido ou expirado.",
-          },
-        },
+  get: {
+    tags: ["Auth"],
+    summary: "Usuário autenticado",
+    description:
+      "Retorna os dados básicos do usuário autenticado.\n\n**Perfis:** Coordenação e Aluno.",
+    security: [{ bearerAuth: [] }],
+    "x-roles": ["COORDINATOR", "STUDENT"],
+    responses: {
+      "200": {
+        description: "Usuário autenticado.",
+      },
+      "401": {
+        description: "Token ausente, inválido ou expirado.",
       },
     },
+  },
+},
 
     "/notices": {
       get: {
