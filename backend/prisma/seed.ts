@@ -2,6 +2,10 @@ import { UserRole } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { prisma } from "../src/config/prisma";
 
+if (process.env.NODE_ENV === "production") {
+  throw new Error("Seed bloqueado em produção porque remove dados existentes.");
+}
+
 async function main() {
   await prisma.grade.deleteMany();
   await prisma.enrollment.deleteMany();

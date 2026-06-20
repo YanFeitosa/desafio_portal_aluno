@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { UserRole } from "@prisma/client";
 import { prisma } from "../config/prisma";
 import { env } from "../config/env";
@@ -28,7 +28,21 @@ export async function authMiddleware(
       throw new AppError("Token inválido.", 401);
     }
 
-    const decoded = jwt.verify(token, env.JWT_SECRET) as TokenPayload;
+    let decoded: TokenPayload;
+
+    try {
+      decoded = jwt.verify(token, env.JWT_SECRET) as TokenPayload;
+    } catch (error) {
+      if (error instanceof TokenExpiredError) {
+        throw new AppError("Token expirado.", 401);
+      }
+
+      if (error instanceof JsonWebTokenError) {
+        throw new AppError("Token inválido.", 401);
+      }
+
+      throw error;
+    }
 
     const user = await prisma.user.findUnique({
       where: {
@@ -48,6 +62,10 @@ export async function authMiddleware(
 
     if (!user || user.deletedAt) {
       throw new AppError("Usuário não encontrado.", 401);
+    }
+
+    if (user.role === UserRole.STUDENT && !user.student) {
+      throw new AppError("Aluno não encontrado.", 401);
     }
 
     req.user = {
