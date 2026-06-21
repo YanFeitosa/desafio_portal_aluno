@@ -1,3 +1,27 @@
+type HttpMethod = "get" | "post" | "put" | "delete";
+
+type OpenApiOperation = {
+  responses: Record<string, Record<string, unknown>>;
+};
+
+type OpenApiPathItem = Partial<Record<HttpMethod, OpenApiOperation>>;
+type ResponseSchemaMap = Record<
+  string,
+  Partial<Record<HttpMethod, Record<string, string>>>
+>;
+
+const schemaRef = (schemaName: string) => ({
+  $ref: `#/components/schemas/${schemaName}`,
+});
+
+const jsonContent = (schemaName: string) => ({
+  content: {
+    "application/json": {
+      schema: schemaRef(schemaName),
+    },
+  },
+});
+
 export const swaggerDocument = {
   openapi: "3.0.0",
   info: {
@@ -112,12 +136,493 @@ export const swaggerDocument = {
         },
       },
 
+      DateTime: {
+        type: "string",
+        format: "date-time",
+        example: "2026-06-21T12:00:00.000Z",
+      },
+
+      UserRole: {
+        type: "string",
+        enum: ["COORDINATOR", "STUDENT"],
+        example: "STUDENT",
+      },
+
+      UserIdentity: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          name: {
+            type: "string",
+            example: "Maria Silva",
+          },
+          email: {
+            type: "string",
+            example: "maria@escola.com",
+          },
+        },
+      },
+
+      UserSummary: {
+        allOf: [
+          {
+            $ref: "#/components/schemas/UserIdentity",
+          },
+          {
+            type: "object",
+            properties: {
+              role: {
+                $ref: "#/components/schemas/UserRole",
+              },
+            },
+          },
+        ],
+      },
+
+      AuthenticatedUser: {
+        allOf: [
+          {
+            $ref: "#/components/schemas/UserSummary",
+          },
+          {
+            type: "object",
+            properties: {
+              studentId: {
+                type: "integer",
+                nullable: true,
+                example: 1,
+              },
+            },
+          },
+        ],
+      },
+
+      LoginResponse: {
+        type: "object",
+        properties: {
+          token: {
+            type: "string",
+            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+          },
+          user: {
+            $ref: "#/components/schemas/UserSummary",
+          },
+        },
+      },
+
+      Notice: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          title: {
+            type: "string",
+            example: "Calendário de avaliações",
+          },
+          content: {
+            type: "string",
+            example:
+              "As próximas avaliações serão divulgadas pela coordenação.",
+          },
+          createdAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          updatedAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          author: {
+            $ref: "#/components/schemas/UserIdentity",
+          },
+        },
+      },
+
+      NoticeListResponse: {
+        type: "object",
+        properties: {
+          notices: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/Notice",
+            },
+          },
+        },
+      },
+
+      NoticeResponse: {
+        type: "object",
+        properties: {
+          notice: {
+            $ref: "#/components/schemas/Notice",
+          },
+        },
+      },
+
+      StudentUser: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          name: {
+            type: "string",
+            example: "João Souza",
+          },
+          email: {
+            type: "string",
+            example: "joao@escola.com",
+          },
+          role: {
+            $ref: "#/components/schemas/UserRole",
+          },
+          createdAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          updatedAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+        },
+      },
+
+      Student: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          registrationNumber: {
+            type: "string",
+            example: "20260001",
+          },
+          createdAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          updatedAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          user: {
+            $ref: "#/components/schemas/StudentUser",
+          },
+        },
+      },
+
+      StudentListResponse: {
+        type: "object",
+        properties: {
+          students: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/Student",
+            },
+          },
+        },
+      },
+
+      StudentResponse: {
+        type: "object",
+        properties: {
+          student: {
+            $ref: "#/components/schemas/Student",
+          },
+        },
+      },
+
+      SubjectSummary: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          name: {
+            type: "string",
+            example: "Matemática",
+          },
+        },
+      },
+
+      Subject: {
+        allOf: [
+          {
+            $ref: "#/components/schemas/SubjectSummary",
+          },
+          {
+            type: "object",
+            properties: {
+              createdAt: {
+                $ref: "#/components/schemas/DateTime",
+              },
+              updatedAt: {
+                $ref: "#/components/schemas/DateTime",
+              },
+            },
+          },
+        ],
+      },
+
+      SubjectListResponse: {
+        type: "object",
+        properties: {
+          subjects: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/Subject",
+            },
+          },
+        },
+      },
+
+      EnrollmentGrade: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          evaluationName: {
+            type: "string",
+            example: "Prova 1",
+          },
+          score: {
+            type: "string",
+            example: "8.5",
+          },
+          createdAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          updatedAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+        },
+      },
+
+      Enrollment: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          createdAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          updatedAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          subject: {
+            $ref: "#/components/schemas/SubjectSummary",
+          },
+          grades: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/EnrollmentGrade",
+            },
+          },
+        },
+      },
+
+      EnrollmentListResponse: {
+        type: "object",
+        properties: {
+          enrollments: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/Enrollment",
+            },
+          },
+        },
+      },
+
+      Grade: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          evaluationName: {
+            type: "string",
+            example: "Prova 1",
+          },
+          score: {
+            type: "string",
+            example: "8.5",
+          },
+          createdAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          updatedAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          enrollment: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+                example: 1,
+              },
+              student: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "integer",
+                    example: 1,
+                  },
+                  registrationNumber: {
+                    type: "string",
+                    example: "20260001",
+                  },
+                  user: {
+                    $ref: "#/components/schemas/UserIdentity",
+                  },
+                },
+              },
+              subject: {
+                $ref: "#/components/schemas/SubjectSummary",
+              },
+            },
+          },
+        },
+      },
+
+      GradeResponse: {
+        type: "object",
+        properties: {
+          grade: {
+            $ref: "#/components/schemas/Grade",
+          },
+        },
+      },
+
+      ReportCardGrade: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          evaluationName: {
+            type: "string",
+            example: "Prova 1",
+          },
+          score: {
+            type: "number",
+            example: 8.5,
+          },
+          createdAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+          updatedAt: {
+            $ref: "#/components/schemas/DateTime",
+          },
+        },
+      },
+
+      ReportCardSubject: {
+        type: "object",
+        properties: {
+          id: {
+            type: "integer",
+            example: 1,
+          },
+          name: {
+            type: "string",
+            example: "Matemática",
+          },
+          grades: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/ReportCardGrade",
+            },
+          },
+          average: {
+            type: "number",
+            nullable: true,
+            example: 8.5,
+          },
+          status: {
+            type: "string",
+            enum: ["Sem notas", "Aprovado", "Reprovado"],
+            example: "Aprovado",
+          },
+        },
+      },
+
+      ReportCardResponse: {
+        type: "object",
+        properties: {
+          student: {
+            type: "object",
+            properties: {
+              id: {
+                type: "integer",
+                example: 1,
+              },
+              name: {
+                type: "string",
+                example: "João Souza",
+              },
+              email: {
+                type: "string",
+                example: "joao@escola.com",
+              },
+              registrationNumber: {
+                type: "string",
+                example: "20260001",
+              },
+            },
+          },
+          subjects: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/ReportCardSubject",
+            },
+          },
+        },
+      },
+
       ErrorResponse: {
         type: "object",
         properties: {
           message: {
             type: "string",
             example: "Acesso não autorizado.",
+          },
+        },
+      },
+
+      ValidationIssue: {
+        type: "object",
+        properties: {
+          path: {
+            type: "string",
+            example: "email",
+          },
+          message: {
+            type: "string",
+            example: "Informe um e-mail válido.",
+          },
+        },
+      },
+
+      ValidationErrorResponse: {
+        type: "object",
+        properties: {
+          message: {
+            type: "string",
+            example: "Erro de validação.",
+          },
+          issues: {
+            type: "array",
+            items: {
+              $ref: "#/components/schemas/ValidationIssue",
+            },
           },
         },
       },
@@ -159,23 +664,23 @@ export const swaggerDocument = {
     },
 
     "/auth/me": {
-  get: {
-    tags: ["Auth"],
-    summary: "Usuário autenticado",
-    description:
-      "Retorna os dados básicos do usuário autenticado.\n\n**Perfis:** Coordenação e Aluno.",
-    security: [{ bearerAuth: [] }],
-    "x-roles": ["COORDINATOR", "STUDENT"],
-    responses: {
-      "200": {
-        description: "Usuário autenticado.",
-      },
-      "401": {
-        description: "Token ausente, inválido ou expirado.",
+      get: {
+        tags: ["Auth"],
+        summary: "Usuário autenticado",
+        description:
+          "Retorna os dados básicos do usuário autenticado.\n\n**Perfis:** Coordenação e Aluno.",
+        security: [{ bearerAuth: [] }],
+        "x-roles": ["COORDINATOR", "STUDENT"],
+        responses: {
+          "200": {
+            description: "Usuário autenticado.",
+          },
+          "401": {
+            description: "Token ausente, inválido ou expirado.",
+          },
+        },
       },
     },
-  },
-},
 
     "/notices": {
       get: {
@@ -583,3 +1088,143 @@ export const swaggerDocument = {
     },
   },
 };
+
+const responseSchemas = {
+  "/auth/login": {
+    post: {
+      "200": "LoginResponse",
+      "400": "ValidationErrorResponse",
+      "401": "ErrorResponse",
+      "429": "ErrorResponse",
+    },
+  },
+  "/auth/me": {
+    get: {
+      "200": "AuthenticatedUser",
+      "401": "ErrorResponse",
+    },
+  },
+  "/notices": {
+    get: {
+      "200": "NoticeListResponse",
+      "401": "ErrorResponse",
+    },
+    post: {
+      "201": "NoticeResponse",
+      "400": "ValidationErrorResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+    },
+  },
+  "/notices/{id}": {
+    put: {
+      "200": "NoticeResponse",
+      "400": "ValidationErrorResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+      "404": "ErrorResponse",
+    },
+    delete: {
+      "400": "ValidationErrorResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+      "404": "ErrorResponse",
+    },
+  },
+  "/students": {
+    get: {
+      "200": "StudentListResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+    },
+  },
+  "/students/{id}": {
+    get: {
+      "200": "StudentResponse",
+      "400": "ValidationErrorResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+      "404": "ErrorResponse",
+    },
+  },
+  "/students/{id}/enrollments": {
+    get: {
+      "200": "EnrollmentListResponse",
+      "400": "ValidationErrorResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+      "404": "ErrorResponse",
+    },
+  },
+  "/subjects": {
+    get: {
+      "200": "SubjectListResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+    },
+  },
+  "/grades": {
+    post: {
+      "201": "GradeResponse",
+      "400": "ValidationErrorResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+      "404": "ErrorResponse",
+    },
+  },
+  "/grades/{id}": {
+    put: {
+      "200": "GradeResponse",
+      "400": "ValidationErrorResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+      "404": "ErrorResponse",
+    },
+  },
+  "/report-card/me": {
+    get: {
+      "200": "ReportCardResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+      "404": "ErrorResponse",
+    },
+  },
+  "/report-card/students/{id}": {
+    get: {
+      "200": "ReportCardResponse",
+      "400": "ValidationErrorResponse",
+      "401": "ErrorResponse",
+      "403": "ErrorResponse",
+      "404": "ErrorResponse",
+    },
+  },
+} satisfies ResponseSchemaMap;
+
+const paths = swaggerDocument.paths as Record<string, OpenApiPathItem>;
+
+for (const [path, methods] of Object.entries(responseSchemas)) {
+  const pathItem = paths[path];
+
+  if (!pathItem) {
+    continue;
+  }
+
+  for (const [method, statuses] of Object.entries(methods) as [
+    HttpMethod,
+    Record<string, string>
+  ][]) {
+    const operation = pathItem[method];
+
+    if (!operation) {
+      continue;
+    }
+
+    for (const [status, schemaName] of Object.entries(statuses)) {
+      const response = operation.responses[status];
+
+      if (response) {
+        Object.assign(response, jsonContent(schemaName));
+      }
+    }
+  }
+}

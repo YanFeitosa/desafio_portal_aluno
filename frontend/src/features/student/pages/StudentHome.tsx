@@ -25,15 +25,15 @@ export function StudentHome() {
           </strong>
         </Link>
 
-        <div className="rounded-lg border border-slate-200 p-4 opacity-70">
+        <Link
+          to="/student/report-card"
+          className="rounded-lg border border-slate-200 p-4 transition hover:border-slate-400 hover:bg-slate-50"
+        >
           <p className="text-sm text-slate-500">Boletim</p>
           <strong className="mt-1 block text-lg text-slate-900">
             Notas por disciplina
           </strong>
-          <span className="mt-2 block text-xs text-slate-500">
-            Em breve
-          </span>
-        </div>
+        </Link>
       </div>
     </section>
   );

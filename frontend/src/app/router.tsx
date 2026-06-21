@@ -10,6 +10,7 @@ import { CoordinatorHome } from "../features/coordinator/pages/CoordinatorHome";
 
 import { StudentHome } from "../features/student/pages/StudentHome";
 import { StudentNoticesPage } from "../features/student/pages/StudentNoticesPage";
+import { StudentReportCardPage } from "../features/student/pages/StudentReportCardPage";
 
 import { UnauthorizedPage } from "../pages/UnauthorizedPage";
 import { AppErrorPage } from "../pages/AppErrorPage";
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
                   {
                     path: "student/notices",
                     element: <StudentNoticesPage />,
+                  },
+                  {
+                    path: "student/report-card",
+                    element: <StudentReportCardPage />,
                   },
                 ],
               },

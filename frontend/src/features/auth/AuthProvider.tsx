@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import { AuthContext } from "./AuthContext";
-import { getAuthenticatedUser, login as loginRequest } from "./services/authService";
+import {
+  getAuthenticatedUser,
+  login as loginRequest,
+} from "./services/authService";
 import type { LoginRequest, User } from "./types";
 import {
   getAuthToken,
@@ -19,12 +22,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   async function login(data: LoginRequest) {
-    const response = await loginRequest(data);
+    const loginResponse = await loginRequest(data);
 
-    saveAuthToken(response.token);
-    setUser(response.user);
+    saveAuthToken(loginResponse.token);
 
-    return response.user;
+    const authenticatedUser = await getAuthenticatedUser();
+
+    setUser(authenticatedUser);
+
+    return authenticatedUser;
   }
 
   function logout() {
