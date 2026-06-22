@@ -7,6 +7,7 @@ import { AppLayout } from "../components/layout/AppLayout";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 
 import { CoordinatorHome } from "../features/coordinator/pages/CoordinatorHome";
+import { ManageNoticesPage } from "../features/coordinator/pages/ManageNoticesPage";
 
 import { StudentHome } from "../features/student/pages/StudentHome";
 import { StudentNoticesPage } from "../features/student/pages/StudentNoticesPage";
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
                   {
                     path: "coordinator",
                     element: <CoordinatorHome />,
+                  },
+                  {
+                    path: "coordinator/notices",
+                    element: <ManageNoticesPage />,
                   },
                 ],
               },

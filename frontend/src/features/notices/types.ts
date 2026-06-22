@@ -16,3 +16,17 @@ export type Notice = {
 export type NoticeListResponse = {
   notices: Notice[];
 };
+
+export type NoticeResponse = {
+  notice: Notice;
+};
+
+export type CreateNoticeRequest = {
+  title: string;
+  content: string;
+};
+
+export type UpdateNoticeRequest = {
+  title?: string;
+  content?: string;
+};

@@ -14,6 +14,10 @@ export function Sidebar() {
       label: "Início",
       path: "/coordinator",
     },
+    {
+      label: "Avisos",
+      path: "/coordinator/notices",
+    },
   ];
 
   const studentItems: NavigationItem[] = [
