@@ -18,22 +18,26 @@ export function Sidebar() {
       label: "Avisos",
       path: "/coordinator/notices",
     },
+    {
+      label: "Alunos",
+      path: "/coordinator/students",
+    },
   ];
 
   const studentItems: NavigationItem[] = [
-  {
-    label: "Início",
-    path: "/student",
-  },
-  {
-    label: "Avisos",
-    path: "/student/notices",
-  },
-  {
-    label: "Boletim",
-    path: "/student/report-card",
-  },
-];
+    {
+      label: "Início",
+      path: "/student",
+    },
+    {
+      label: "Avisos",
+      path: "/student/notices",
+    },
+    {
+      label: "Boletim",
+      path: "/student/report-card",
+    },
+  ];
 
   const items = user?.role === "COORDINATOR" ? coordinatorItems : studentItems;
 

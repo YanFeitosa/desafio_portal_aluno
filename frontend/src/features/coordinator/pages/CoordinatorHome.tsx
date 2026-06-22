@@ -25,19 +25,25 @@ export function CoordinatorHome() {
           </strong>
         </Link>
 
-        <div className="rounded-lg border border-slate-200 p-4">
+        <Link
+          to="/coordinator/students"
+          className="rounded-lg border border-slate-200 p-4 transition hover:border-slate-300 hover:bg-slate-50"
+        >
           <p className="text-sm text-slate-500">Acadêmico</p>
           <strong className="mt-1 block text-lg text-slate-900">
             Gestão de alunos
           </strong>
-        </div>
+        </Link>
 
-        <div className="rounded-lg border border-slate-200 p-4">
+        <Link
+          to="/coordinator/students"
+          className="rounded-lg border border-slate-200 p-4 transition hover:border-slate-300 hover:bg-slate-50"
+        >
           <p className="text-sm text-slate-500">Notas</p>
           <strong className="mt-1 block text-lg text-slate-900">
             Boletins e avaliações
           </strong>
-        </div>
+        </Link>
       </div>
     </section>
   );

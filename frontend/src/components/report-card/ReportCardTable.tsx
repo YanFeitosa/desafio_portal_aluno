@@ -14,7 +14,7 @@ function formatScore(score: number | null) {
 
   return new Intl.NumberFormat("pt-BR", {
     minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
+    maximumFractionDigits: 2,
   }).format(score);
 }
 

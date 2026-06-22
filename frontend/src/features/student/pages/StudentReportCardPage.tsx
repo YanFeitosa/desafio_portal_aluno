@@ -11,21 +11,29 @@ export function StudentReportCardPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function loadReportCard() {
-      try {
-        setError("");
-        setIsLoading(true);
+    let isActive = true;
 
-        const data = await getMyReportCard();
-        setReportCard(data);
-      } catch {
-        setError("Não foi possível carregar o boletim.");
-      } finally {
-        setIsLoading(false);
-      }
-    }
+    getMyReportCard()
+      .then((data) => {
+        if (isActive) {
+          setError("");
+          setReportCard(data);
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          setError("Não foi possível carregar o boletim.");
+        }
+      })
+      .finally(() => {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      });
 
-    loadReportCard();
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   if (isLoading) {
@@ -35,9 +43,7 @@ export function StudentReportCardPage() {
           Boletim acadêmico
         </h1>
 
-        <p className="mt-4 text-sm text-slate-600">
-          Carregando boletim...
-        </p>
+        <p className="mt-4 text-sm text-slate-600">Carregando boletim...</p>
       </section>
     );
   }
@@ -86,6 +92,13 @@ export function StudentReportCardPage() {
             Aluno:{" "}
             <strong className="font-semibold text-slate-900">
               {reportCard.student.name}
+            </strong>
+          </p>
+
+          <p>
+            E-mail:{" "}
+            <strong className="font-semibold text-slate-900">
+              {reportCard.student.email}
             </strong>
           </p>
 

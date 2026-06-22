@@ -8,6 +8,8 @@ import { LoginPage } from "../features/auth/pages/LoginPage";
 
 import { CoordinatorHome } from "../features/coordinator/pages/CoordinatorHome";
 import { ManageNoticesPage } from "../features/coordinator/pages/ManageNoticesPage";
+import { StudentAcademicPage } from "../features/coordinator/pages/StudentAcademicPage";
+import { StudentsPage } from "../features/coordinator/pages/StudentsPage";
 
 import { StudentHome } from "../features/student/pages/StudentHome";
 import { StudentNoticesPage } from "../features/student/pages/StudentNoticesPage";
@@ -45,6 +47,14 @@ export const router = createBrowserRouter([
                   {
                     path: "coordinator/notices",
                     element: <ManageNoticesPage />,
+                  },
+                  {
+                    path: "coordinator/students",
+                    element: <StudentsPage />,
+                  },
+                  {
+                    path: "coordinator/students/:id",
+                    element: <StudentAcademicPage />,
                   },
                 ],
               },
