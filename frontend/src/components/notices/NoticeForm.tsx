@@ -10,6 +10,7 @@ type NoticeFormErrors = Partial<Record<keyof NoticeFormValues, string>>;
 type NoticeFormProps = {
   initialValues?: NoticeFormValues;
   submitLabel: string;
+  cancelLabel?: string;
   isSubmitting: boolean;
   onSubmit: (data: NoticeFormValues) => Promise<void> | void;
   onCancel?: () => void;
@@ -49,6 +50,7 @@ function validateNotice(values: NoticeFormValues) {
 }
 
 export function NoticeForm({
+  cancelLabel = "Cancelar",
   initialValues,
   submitLabel,
   isSubmitting,
@@ -146,7 +148,7 @@ export function NoticeForm({
             onClick={onCancel}
             disabled={isSubmitting}
           >
-            Cancelar edição
+            {cancelLabel}
           </Button>
         )}
       </div>

@@ -28,14 +28,44 @@ function formatNoticeDate(date: string) {
   }).format(new Date(date));
 }
 
+function normalizeSearch(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function filterNotices(notices: Notice[], searchTerm: string) {
+  const normalizedSearch = normalizeSearch(searchTerm);
+
+  if (!normalizedSearch) {
+    return notices;
+  }
+
+  return notices.filter((notice) => {
+    const title = normalizeSearch(notice.title);
+    const content = normalizeSearch(notice.content);
+    const author = normalizeSearch(notice.author.name);
+
+    return (
+      title.includes(normalizedSearch) ||
+      content.includes(normalizedSearch) ||
+      author.includes(normalizedSearch)
+    );
+  });
+}
+
 export function ManageNoticesPage() {
   const [notices, setNotices] = useState<Notice[]>([]);
   const [editingNotice, setEditingNotice] = useState<Notice | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletingNoticeId, setDeletingNoticeId] = useState<number | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [listError, setListError] = useState("");
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [createFormKey, setCreateFormKey] = useState(0);
 
   const initialValues = useMemo(() => {
@@ -48,6 +78,11 @@ export function ManageNoticesPage() {
       content: editingNotice.content,
     };
   }, [editingNotice]);
+  const showNoticeForm = isFormOpen || !!editingNotice;
+  const filteredNotices = useMemo(
+    () => filterNotices(notices, searchTerm),
+    [notices, searchTerm]
+  );
 
   async function loadNotices() {
     try {
@@ -99,6 +134,7 @@ export function ManageNoticesPage() {
         type: "success",
         message: "Aviso criado com sucesso.",
       });
+      setIsFormOpen(false);
       setCreateFormKey((currentKey) => currentKey + 1);
       await loadNotices();
     } catch {
@@ -126,6 +162,7 @@ export function ManageNoticesPage() {
         message: "Aviso atualizado com sucesso.",
       });
       setEditingNotice(null);
+      setIsFormOpen(false);
       await loadNotices();
     } catch {
       setFeedback({
@@ -154,6 +191,7 @@ export function ManageNoticesPage() {
 
       if (editingNotice?.id === notice.id) {
         setEditingNotice(null);
+        setIsFormOpen(false);
       }
 
       setFeedback({
@@ -171,8 +209,21 @@ export function ManageNoticesPage() {
     }
   }
 
-  function handleCancelEditing() {
+  function handleOpenCreateForm() {
+    setFeedback(null);
     setEditingNotice(null);
+    setIsFormOpen(true);
+  }
+
+  function handleEditNotice(notice: Notice) {
+    setFeedback(null);
+    setIsFormOpen(false);
+    setEditingNotice(notice);
+  }
+
+  function handleCloseNoticeForm() {
+    setEditingNotice(null);
+    setIsFormOpen(false);
   }
 
   return (
@@ -183,12 +234,10 @@ export function ManageNoticesPage() {
         actions={
           <Button
             type="button"
-            variant="secondary"
-            onClick={() => void loadNotices()}
-            isLoading={isLoading}
-            loadingLabel="Recarregando..."
+            onClick={handleOpenCreateForm}
+            disabled={isSubmitting}
           >
-            Recarregar
+            Adicionar
           </Button>
         }
       />
@@ -206,40 +255,67 @@ export function ManageNoticesPage() {
         </p>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[380px_minmax(0,1fr)]">
-        <Card>
-          <h2 className="text-lg font-semibold text-[#12213a]">
-            {editingNotice ? "Editar aviso" : "Novo aviso"}
-          </h2>
-
-          <p className="mt-1 text-sm text-[#526173]">
-            {editingNotice
-              ? "Revise o conteúdo e salve as alterações."
-              : "Crie um comunicado para o mural institucional."}
-          </p>
-
-          <div className="mt-5">
-            <NoticeForm
-              key={editingNotice?.id ?? `create-${createFormKey}`}
-              initialValues={initialValues}
-              submitLabel={editingNotice ? "Salvar alterações" : "Publicar aviso"}
-              isSubmitting={isSubmitting}
-              onSubmit={editingNotice ? handleUpdateNotice : handleCreateNotice}
-              onCancel={editingNotice ? handleCancelEditing : undefined}
-            />
-          </div>
-        </Card>
-
-        <Card>
-          <div className="mb-5">
+      <div className="space-y-6">
+        {showNoticeForm && (
+          <Card>
             <h2 className="text-lg font-semibold text-[#12213a]">
-              Avisos publicados
+              {editingNotice ? "Editar aviso" : "Novo aviso"}
             </h2>
 
             <p className="mt-1 text-sm text-[#526173]">
-              {notices.length} {notices.length === 1 ? "aviso" : "avisos"} na
-              listagem.
+              {editingNotice
+                ? "Revise o conteúdo e salve as alterações."
+                : "Crie um comunicado para o mural institucional."}
             </p>
+
+            <div className="mt-5">
+              <NoticeForm
+                key={editingNotice?.id ?? `create-${createFormKey}`}
+                initialValues={initialValues}
+                submitLabel={
+                  editingNotice ? "Salvar alterações" : "Publicar aviso"
+                }
+                cancelLabel={editingNotice ? "Cancelar edição" : "Cancelar"}
+                isSubmitting={isSubmitting}
+                onSubmit={editingNotice ? handleUpdateNotice : handleCreateNotice}
+                onCancel={handleCloseNoticeForm}
+              />
+            </div>
+          </Card>
+        )}
+
+        <Card>
+          <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-[#12213a]">
+                Avisos publicados
+              </h2>
+
+              <p className="mt-1 text-sm text-[#526173]">
+                {filteredNotices.length}{" "}
+                {filteredNotices.length === 1
+                  ? "aviso encontrado"
+                  : "avisos encontrados"}
+              </p>
+            </div>
+
+            <div className="w-full md:max-w-sm">
+              <label
+                htmlFor="notice-search"
+                className="text-sm font-semibold text-[#24364f]"
+              >
+                Buscar
+              </label>
+
+              <input
+                id="notice-search"
+                type="search"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                className="mt-1 w-full rounded-lg border border-[#c8d3df] px-3 py-2 text-[#12213a] outline-none transition placeholder:text-slate-400 focus:border-[#17324d] focus:ring-2 focus:ring-[#17324d]/10"
+                placeholder="Título, conteúdo ou autor"
+              />
+            </div>
           </div>
 
           {isLoading && <LoadingState message="Carregando avisos..." />}
@@ -258,9 +334,19 @@ export function ManageNoticesPage() {
             />
           )}
 
-          {!isLoading && !listError && notices.length > 0 && (
+          {!isLoading &&
+            !listError &&
+            notices.length > 0 &&
+            filteredNotices.length === 0 && (
+              <EmptyState
+                title="Nenhum resultado"
+                message="Nenhum aviso encontrado para a busca informada."
+              />
+            )}
+
+          {!isLoading && !listError && filteredNotices.length > 0 && (
             <div className="space-y-4">
-              {notices.map((notice) => (
+              {filteredNotices.map((notice) => (
                 <article
                   key={notice.id}
                   className="rounded-lg border border-[#d8e1ea] bg-[#fbfcfd] p-5"
@@ -282,7 +368,7 @@ export function ManageNoticesPage() {
                         type="button"
                         variant="secondary"
                         size="sm"
-                        onClick={() => setEditingNotice(notice)}
+                        onClick={() => handleEditNotice(notice)}
                       >
                         Editar
                       </Button>

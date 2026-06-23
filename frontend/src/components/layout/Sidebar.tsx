@@ -19,11 +19,10 @@ const navigationByRole: Record<UserRole, NavigationItem[]> = {
     { label: "Dashboard", path: "/coordinator", end: true },
     { label: "Avisos", path: "/coordinator/notices" },
     {
-      label: "Notas",
+      label: "Gestão acadêmica",
       path: "/coordinator/grades",
-      activePrefixes: ["/coordinator/students/"],
+      activePrefixes: ["/coordinator/grades/"],
     },
-    { label: "Alunos", path: "/coordinator/students", end: true },
   ],
   STUDENT: [
     { label: "Início", path: "/student", end: true },

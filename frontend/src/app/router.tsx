@@ -7,9 +7,9 @@ import { AppLayout } from "../components/layout/AppLayout";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 
 import { CoordinatorHome } from "../features/coordinator/pages/CoordinatorHome";
+import { AcademicManagementPage } from "../features/coordinator/pages/AcademicManagementPage";
 import { ManageNoticesPage } from "../features/coordinator/pages/ManageNoticesPage";
 import { StudentAcademicPage } from "../features/coordinator/pages/StudentAcademicPage";
-import { StudentsPage } from "../features/coordinator/pages/StudentsPage";
 
 import { StudentHome } from "../features/student/pages/StudentHome";
 import { StudentNoticesPage } from "../features/student/pages/StudentNoticesPage";
@@ -50,14 +50,10 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: "coordinator/grades",
-                    element: <StudentsPage />,
+                    element: <AcademicManagementPage />,
                   },
                   {
-                    path: "coordinator/students",
-                    element: <StudentsPage />,
-                  },
-                  {
-                    path: "coordinator/students/:id",
+                    path: "coordinator/grades/:id",
                     element: <StudentAcademicPage />,
                   },
                 ],

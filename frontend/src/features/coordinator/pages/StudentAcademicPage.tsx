@@ -39,6 +39,8 @@ type ActiveGradeForm =
       initialValues: GradeFormValues;
     };
 
+type EnrollmentGrade = StudentEnrollment["grades"][number];
+
 function formatScore(score: string) {
   const numericScore = Number(score);
 
@@ -54,6 +56,89 @@ function formatScore(score: string) {
 
 function isPositiveInteger(value: number) {
   return Number.isInteger(value) && value > 0;
+}
+
+function EnrollmentGrades({
+  grades,
+  isSubmitting,
+  onEdit,
+}: {
+  grades: EnrollmentGrade[];
+  isSubmitting: boolean;
+  onEdit: (grade: EnrollmentGrade) => void;
+}) {
+  return (
+    <>
+      <div className="hidden md:block">
+        <Table>
+          <TableHead>
+            <tr>
+              <TableHeaderCell>Avaliação</TableHeaderCell>
+              <TableHeaderCell align="right">Nota</TableHeaderCell>
+              <TableHeaderCell align="right">Ações</TableHeaderCell>
+            </tr>
+          </TableHead>
+
+          <TableBody>
+            {grades.map((grade) => (
+              <tr key={grade.id}>
+                <TableCell className="text-[#526173]">
+                  {grade.evaluationName}
+                </TableCell>
+                <TableCell align="right" strong>
+                  {formatScore(grade.score)}
+                </TableCell>
+                <TableCell align="right">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => onEdit(grade)}
+                    disabled={isSubmitting}
+                  >
+                    Editar
+                  </Button>
+                </TableCell>
+              </tr>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="space-y-3 md:hidden">
+        {grades.map((grade) => (
+          <article
+            key={grade.id}
+            className="rounded-lg border border-[#d8e1ea] bg-[#fbfcfd] p-4"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="font-semibold text-[#12213a]">
+                  {grade.evaluationName}
+                </h3>
+                <p className="mt-1 text-sm text-[#526173]">
+                  Nota:{" "}
+                  <strong className="text-[#12213a]">
+                    {formatScore(grade.score)}
+                  </strong>
+                </p>
+              </div>
+
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => onEdit(grade)}
+                disabled={isSubmitting}
+              >
+                Editar
+              </Button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </>
+  );
 }
 
 export function StudentAcademicPage() {
@@ -184,6 +269,18 @@ export function StudentAcademicPage() {
     );
   }
 
+  function handleEditGrade(enrollmentId: number, grade: EnrollmentGrade) {
+    setActiveGradeForm({
+      mode: "edit",
+      enrollmentId,
+      gradeId: grade.id,
+      initialValues: {
+        evaluationName: grade.evaluationName,
+        score: Number(grade.score),
+      },
+    });
+  }
+
   if (isLoading) {
     return (
       <section>
@@ -240,10 +337,10 @@ export function StudentAcademicPage() {
         details={
           <>
             <Link
-              to="/coordinator/students"
+              to="/coordinator/grades"
               className="text-sm font-semibold text-[#54708c] transition hover:text-[#17324d]"
             >
-              Voltar para alunos
+              Voltar para gestão acadêmica
             </Link>
 
             <div className="mt-3 grid gap-3 rounded-lg border border-[#d8e1ea] bg-[#f6f9fb] px-4 py-3 text-sm text-[#526173] sm:grid-cols-2">
@@ -342,49 +439,11 @@ export function StudentAcademicPage() {
                       message="Nenhuma nota registrada para esta disciplina."
                     />
                   ) : (
-                    <Table>
-                      <TableHead>
-                        <tr>
-                          <TableHeaderCell>Avaliação</TableHeaderCell>
-                          <TableHeaderCell align="right">Nota</TableHeaderCell>
-                          <TableHeaderCell align="right">Ações</TableHeaderCell>
-                        </tr>
-                      </TableHead>
-
-                      <TableBody>
-                        {enrollment.grades.map((grade) => (
-                          <tr key={grade.id}>
-                            <TableCell className="text-[#526173]">
-                              {grade.evaluationName}
-                            </TableCell>
-                            <TableCell align="right" strong>
-                              {formatScore(grade.score)}
-                            </TableCell>
-                            <TableCell align="right">
-                              <Button
-                                type="button"
-                                variant="secondary"
-                                size="sm"
-                                onClick={() =>
-                                  setActiveGradeForm({
-                                    mode: "edit",
-                                    enrollmentId: enrollment.id,
-                                    gradeId: grade.id,
-                                    initialValues: {
-                                      evaluationName: grade.evaluationName,
-                                      score: Number(grade.score),
-                                    },
-                                  })
-                                }
-                                disabled={isSubmitting}
-                              >
-                                Editar
-                              </Button>
-                            </TableCell>
-                          </tr>
-                        ))}
-                      </TableBody>
-                    </Table>
+                    <EnrollmentGrades
+                      grades={enrollment.grades}
+                      isSubmitting={isSubmitting}
+                      onEdit={(grade) => handleEditGrade(enrollment.id, grade)}
+                    />
                   )}
 
                   {isEditingThisEnrollment && activeGradeForm.mode === "edit" && (

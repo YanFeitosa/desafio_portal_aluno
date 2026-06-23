@@ -12,7 +12,7 @@ export function CoordinatorHome() {
         description={`Bem-vindo, ${user?.name}. Use o menu para gerenciar os fluxos administrativos do portal.`}
       />
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         <Link
           to="/coordinator/notices"
           className="rounded-lg border border-[#d8e1ea] border-l-4 border-l-[#2f6f5e] bg-white p-5 shadow-sm shadow-slate-900/5 transition hover:-translate-y-0.5 hover:border-[#b7c6d6] hover:bg-[#fbfcfd]"
@@ -24,22 +24,12 @@ export function CoordinatorHome() {
         </Link>
 
         <Link
-          to="/coordinator/students"
-          className="rounded-lg border border-[#d8e1ea] border-l-4 border-l-[#54708c] bg-white p-5 shadow-sm shadow-slate-900/5 transition hover:-translate-y-0.5 hover:border-[#b7c6d6] hover:bg-[#fbfcfd]"
-        >
-          <p className="text-sm font-semibold text-[#54708c]">Acadêmico</p>
-          <strong className="mt-1 block text-lg text-[#12213a]">
-            Gestão de alunos
-          </strong>
-        </Link>
-
-        <Link
           to="/coordinator/grades"
           className="rounded-lg border border-[#d8e1ea] border-l-4 border-l-[#b88746] bg-white p-5 shadow-sm shadow-slate-900/5 transition hover:-translate-y-0.5 hover:border-[#b7c6d6] hover:bg-[#fbfcfd]"
         >
-          <p className="text-sm font-semibold text-[#9a6b2f]">Notas</p>
+          <p className="text-sm font-semibold text-[#9a6b2f]">Acadêmico</p>
           <strong className="mt-1 block text-lg text-[#12213a]">
-            Boletins e avaliações
+            Gestão acadêmica
           </strong>
         </Link>
       </div>
