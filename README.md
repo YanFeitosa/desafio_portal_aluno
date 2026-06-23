@@ -50,3 +50,4 @@ Todos os usuarios do seed usam a senha `123456`.
 - O token JWT fica em `localStorage` no frontend. Para este MVP; em producao, deveria ser substituido por cookie `HttpOnly` e `Secure` ou uma estrategia com refresh token.
 - O seed é destrutivo e apaga e recria dados. Rodar apenas em ambiente local ou de teste.
 - A configuracao de CORS usa uma origem exata. Se usar outra URL no frontend, ajuste `CORS_ORIGIN`.
+- Observação: a rota `/docs` está pública apenas para facilitar a avaliação do desafio; em produção, ela seria restringida ou desabilitada.
