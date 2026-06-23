@@ -16,15 +16,15 @@ export function EmptyState({
   return (
     <div
       className={[
-        "rounded-lg border border-dashed border-slate-300 bg-slate-50 px-6 py-8 text-center",
+        "rounded-lg border border-dashed border-[#c8d3df] bg-[#f6f9fb] px-6 py-8 text-center",
         className,
       ]
         .filter(Boolean)
         .join(" ")}
       {...props}
     >
-      <p className="text-sm font-semibold text-slate-900">{title}</p>
-      <p className="mt-1 text-sm text-slate-600">{message}</p>
+      <p className="text-sm font-semibold text-[#12213a]">{title}</p>
+      <p className="mt-1 text-sm text-[#526173]">{message}</p>
 
       {action && <div className="mt-4">{action}</div>}
     </div>

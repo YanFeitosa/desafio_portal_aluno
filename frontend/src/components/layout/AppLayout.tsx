@@ -7,7 +7,7 @@ export function AppLayout() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900">
+    <div className="min-h-screen text-[#12213a]">
       <div className="flex min-h-screen">
         <Sidebar
           isOpen={isMobileMenuOpen}
@@ -22,7 +22,7 @@ export function AppLayout() {
             }
           />
 
-          <main className="flex-1 px-4 py-5 sm:px-6 lg:px-8">
+          <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
             <div className="mx-auto w-full max-w-6xl">
               <Outlet />
             </div>

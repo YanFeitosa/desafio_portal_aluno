@@ -85,24 +85,24 @@ export function StudentReportCardPage() {
         title="Boletim acadêmico"
         description="Consulte suas notas, médias e situação por disciplina."
         details={
-          <div className="grid gap-3 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600 sm:grid-cols-2">
+          <div className="grid gap-3 rounded-lg border border-[#d8e1ea] bg-[#f6f9fb] px-4 py-3 text-sm text-[#526173] sm:grid-cols-2">
             <p>
               Aluno:{" "}
-              <strong className="font-semibold text-slate-900">
+              <strong className="font-semibold text-[#12213a]">
                 {reportCard.student.name}
               </strong>
             </p>
 
             <p>
               E-mail:{" "}
-              <strong className="font-semibold text-slate-900">
+              <strong className="font-semibold text-[#12213a]">
                 {reportCard.student.email}
               </strong>
             </p>
 
             <p>
               Matrícula:{" "}
-              <strong className="font-semibold text-slate-900">
+              <strong className="font-semibold text-[#12213a]">
                 {reportCard.student.registrationNumber}
               </strong>
             </p>

@@ -15,20 +15,20 @@ export function StudentHome() {
       <div className="grid gap-4 md:grid-cols-2">
         <Link
           to="/student/notices"
-          className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+          className="rounded-lg border border-[#d8e1ea] border-l-4 border-l-[#2f6f5e] bg-white p-5 shadow-sm shadow-slate-900/5 transition hover:-translate-y-0.5 hover:border-[#b7c6d6] hover:bg-[#fbfcfd]"
         >
-          <p className="text-sm text-slate-500">Mural</p>
-          <strong className="mt-1 block text-lg text-slate-900">
+          <p className="text-sm font-semibold text-[#2f6f5e]">Mural</p>
+          <strong className="mt-1 block text-lg text-[#12213a]">
             Avisos recentes
           </strong>
         </Link>
 
         <Link
           to="/student/report-card"
-          className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+          className="rounded-lg border border-[#d8e1ea] border-l-4 border-l-[#b88746] bg-white p-5 shadow-sm shadow-slate-900/5 transition hover:-translate-y-0.5 hover:border-[#b7c6d6] hover:bg-[#fbfcfd]"
         >
-          <p className="text-sm text-slate-500">Boletim</p>
-          <strong className="mt-1 block text-lg text-slate-900">
+          <p className="text-sm font-semibold text-[#9a6b2f]">Boletim</p>
+          <strong className="mt-1 block text-lg text-[#12213a]">
             Notas por disciplina
           </strong>
         </Link>

@@ -76,7 +76,10 @@ export function NoticeForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="notice-title" className="text-sm font-medium text-slate-700">
+        <label
+          htmlFor="notice-title"
+          className="text-sm font-semibold text-[#24364f]"
+        >
           Título
         </label>
 
@@ -91,7 +94,7 @@ export function NoticeForm({
               title: event.target.value,
             }))
           }
-          className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none transition focus:border-slate-900"
+          className="mt-1 w-full rounded-lg border border-[#c8d3df] px-3 py-2 text-[#12213a] outline-none transition placeholder:text-slate-400 focus:border-[#17324d] focus:ring-2 focus:ring-[#17324d]/10"
           placeholder="Ex.: Calendário de avaliações"
         />
 
@@ -103,7 +106,7 @@ export function NoticeForm({
       <div>
         <label
           htmlFor="notice-content"
-          className="text-sm font-medium text-slate-700"
+          className="text-sm font-semibold text-[#24364f]"
         >
           Conteúdo
         </label>
@@ -118,7 +121,7 @@ export function NoticeForm({
               content: event.target.value,
             }))
           }
-          className="mt-1 w-full resize-y rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none transition focus:border-slate-900"
+          className="mt-1 w-full resize-y rounded-lg border border-[#c8d3df] px-3 py-2 text-[#12213a] outline-none transition placeholder:text-slate-400 focus:border-[#17324d] focus:ring-2 focus:ring-[#17324d]/10"
           placeholder="Escreva o comunicado para alunos e coordenação."
         />
 

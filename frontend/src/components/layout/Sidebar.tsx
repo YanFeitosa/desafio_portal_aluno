@@ -6,7 +6,6 @@ type NavigationItem = {
   label: string;
   path?: string;
   end?: boolean;
-  disabled?: boolean;
   activePrefixes?: string[];
 };
 
@@ -25,13 +24,11 @@ const navigationByRole: Record<UserRole, NavigationItem[]> = {
       activePrefixes: ["/coordinator/students/"],
     },
     { label: "Alunos", path: "/coordinator/students", end: true },
-    { label: "Disciplinas", disabled: true },
   ],
   STUDENT: [
     { label: "Início", path: "/student", end: true },
     { label: "Avisos", path: "/student/notices" },
     { label: "Boletim", path: "/student/report-card" },
-    { label: "Meu perfil", disabled: true },
   ],
 };
 
@@ -41,10 +38,10 @@ function getRoleLabel(role?: UserRole) {
 
 function getNavigationClassName(isActive: boolean) {
   return [
-    "flex min-h-10 items-center rounded-lg px-3 py-2 text-sm font-medium transition",
+    "flex min-h-10 items-center rounded-lg px-3 py-2 text-sm font-semibold transition",
     isActive
-      ? "bg-slate-900 text-white"
-      : "text-slate-700 hover:bg-slate-100",
+      ? "bg-[#17324d] text-white shadow-sm shadow-slate-900/10"
+      : "text-[#43536a] hover:bg-[#eef4f7] hover:text-[#12213a]",
   ].join(" ");
 }
 
@@ -62,25 +59,22 @@ function SidebarContent({
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-lg font-bold text-slate-900">Portal do Aluno</h1>
-        <p className="text-sm text-slate-500">{roleLabel}</p>
+        <div className="flex items-center gap-3">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#c8d3df] bg-[#f6f9fb] text-sm font-bold text-[#17324d]">
+            PA
+          </span>
+
+          <div>
+            <h1 className="text-lg font-bold text-[#12213a]">
+              Portal do Aluno
+            </h1>
+            <p className="text-sm text-[#66768a]">{roleLabel}</p>
+          </div>
+        </div>
       </div>
 
       <nav className="space-y-1" aria-label="Navegação principal">
         {items.map((item) => {
-          if (!item.path || item.disabled) {
-            return (
-              <span
-                key={item.label}
-                aria-disabled="true"
-                title="Preparado para etapa futura"
-                className="flex min-h-10 cursor-not-allowed items-center rounded-lg px-3 py-2 text-sm font-medium text-slate-400"
-              >
-                {item.label}
-              </span>
-            );
-          }
-
           const hasActivePrefix = item.activePrefixes?.some((prefix) =>
             location.pathname.startsWith(prefix)
           );
@@ -88,7 +82,7 @@ function SidebarContent({
           return (
             <NavLink
               key={item.path}
-              to={item.path}
+              to={item.path!}
               end={item.end}
               onClick={onNavigate}
               className={({ isActive }) =>
@@ -111,7 +105,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   return (
     <>
-      <aside className="hidden min-h-screen w-72 shrink-0 border-r border-slate-200 bg-white p-4 lg:block">
+      <aside className="hidden min-h-screen w-72 shrink-0 border-r border-[#d8e1ea] bg-white/95 p-4 shadow-sm shadow-slate-900/5 lg:block">
         <SidebarContent items={items} roleLabel={roleLabel} />
       </aside>
 
@@ -120,11 +114,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           <button
             type="button"
             aria-label="Fechar menu"
-            className="absolute inset-0 h-full w-full bg-slate-950/40"
+            className="absolute inset-0 h-full w-full bg-[#12213a]/45"
             onClick={onClose}
           />
 
-          <aside className="relative z-10 flex h-full w-[min(20rem,86vw)] flex-col border-r border-slate-200 bg-white p-4 shadow-xl">
+          <aside className="relative z-10 flex h-full w-[min(20rem,86vw)] flex-col border-r border-[#d8e1ea] bg-white p-4 shadow-xl">
             <SidebarContent
               items={items}
               onNavigate={onClose}

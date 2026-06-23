@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../../components/ui";
 import { useAuth } from "../useAuth";
 
 export function LoginPage() {
@@ -43,15 +44,22 @@ export function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-      <section className="w-full max-w-md rounded-xl bg-white p-8 shadow">
+    <main className="flex min-h-screen items-center justify-center px-4 py-10">
+      <section className="w-full max-w-md overflow-hidden rounded-lg border border-[#d8e1ea] bg-white shadow-lg shadow-slate-900/10">
+        <div className="h-2 bg-[#2f6f5e]" />
+
+        <div className="p-8">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">
+          <span className="inline-flex rounded-full border border-[#cfe0d9] bg-[#eef7f2] px-3 py-1 text-xs font-semibold text-[#2f6f5e]">
+            Ambiente acadêmico
+          </span>
+
+          <h1 className="mt-4 text-3xl font-bold text-[#12213a]">
             Portal do Aluno
           </h1>
 
-          <p className="mt-2 text-sm text-slate-600">
-            Acesse sua conta para continuar.
+          <p className="mt-2 text-sm leading-6 text-[#526173]">
+            Acesse sua conta institucional para consultar avisos e boletins.
           </p>
         </div>
 
@@ -59,7 +67,7 @@ export function LoginPage() {
           <div>
             <label
               htmlFor="email"
-              className="text-sm font-medium text-slate-700"
+              className="text-sm font-semibold text-[#24364f]"
             >
               E-mail
             </label>
@@ -67,7 +75,7 @@ export function LoginPage() {
             <input
               id="email"
               type="email"
-              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none transition focus:border-slate-900"
+              className="mt-1 w-full rounded-lg border border-[#c8d3df] px-3 py-2 text-[#12213a] outline-none transition placeholder:text-slate-400 focus:border-[#17324d] focus:ring-2 focus:ring-[#17324d]/10"
               placeholder="seu@email.com"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -77,7 +85,7 @@ export function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="text-sm font-medium text-slate-700"
+              className="text-sm font-semibold text-[#24364f]"
             >
               Senha
             </label>
@@ -85,7 +93,7 @@ export function LoginPage() {
             <input
               id="password"
               type="password"
-              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 outline-none transition focus:border-slate-900"
+              className="mt-1 w-full rounded-lg border border-[#c8d3df] px-3 py-2 text-[#12213a] outline-none transition placeholder:text-slate-400 focus:border-[#17324d] focus:ring-2 focus:ring-[#17324d]/10"
               placeholder="Sua senha"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -93,19 +101,20 @@ export function LoginPage() {
           </div>
 
           {error && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p className="rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-sm text-red-700">
               {error}
             </p>
           )}
 
-          <button
+          <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-lg bg-slate-900 px-4 py-2 font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+            fullWidth
           >
             {isSubmitting ? "Entrando..." : "Entrar"}
-          </button>
+          </Button>
         </form>
+        </div>
       </section>
     </main>
   );

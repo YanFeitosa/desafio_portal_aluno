@@ -198,8 +198,8 @@ export function ManageNoticesPage() {
           className={[
             "mb-6 rounded-lg px-4 py-3 text-sm",
             feedback.type === "success"
-              ? "bg-emerald-50 text-emerald-700"
-              : "bg-red-50 text-red-700",
+              ? "border border-[#cfe0d9] bg-[#eef7f2] text-[#2f6f5e]"
+              : "border border-red-100 bg-red-50 text-red-700",
           ].join(" ")}
         >
           {feedback.message}
@@ -208,11 +208,11 @@ export function ManageNoticesPage() {
 
       <div className="grid gap-6 lg:grid-cols-[380px_minmax(0,1fr)]">
         <Card>
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-[#12213a]">
             {editingNotice ? "Editar aviso" : "Novo aviso"}
           </h2>
 
-          <p className="mt-1 text-sm text-slate-600">
+          <p className="mt-1 text-sm text-[#526173]">
             {editingNotice
               ? "Revise o conteúdo e salve as alterações."
               : "Crie um comunicado para o mural institucional."}
@@ -232,11 +232,11 @@ export function ManageNoticesPage() {
 
         <Card>
           <div className="mb-5">
-            <h2 className="text-lg font-semibold text-slate-900">
+            <h2 className="text-lg font-semibold text-[#12213a]">
               Avisos publicados
             </h2>
 
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-[#526173]">
               {notices.length} {notices.length === 1 ? "aviso" : "avisos"} na
               listagem.
             </p>
@@ -263,15 +263,15 @@ export function ManageNoticesPage() {
               {notices.map((notice) => (
                 <article
                   key={notice.id}
-                  className="rounded-lg border border-slate-200 p-5"
+                  className="rounded-lg border border-[#d8e1ea] bg-[#fbfcfd] p-5"
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-900">
+                      <h3 className="text-lg font-semibold text-[#12213a]">
                         {notice.title}
                       </h3>
 
-                      <p className="mt-1 text-xs text-slate-500">
+                      <p className="mt-1 text-xs text-[#66768a]">
                         Publicado por {notice.author.name} em{" "}
                         {formatNoticeDate(notice.createdAt)}
                       </p>
@@ -300,7 +300,7 @@ export function ManageNoticesPage() {
                     </div>
                   </div>
 
-                  <p className="mt-4 whitespace-pre-line text-sm leading-6 text-slate-600">
+                  <p className="mt-4 whitespace-pre-line text-sm leading-6 text-[#526173]">
                     {notice.content}
                   </p>
                 </article>

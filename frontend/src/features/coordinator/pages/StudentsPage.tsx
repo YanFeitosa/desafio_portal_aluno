@@ -80,11 +80,11 @@ export function StudentsPage() {
       />
 
       <Card>
-        <h2 className="text-lg font-semibold text-slate-900">
+        <h2 className="text-lg font-semibold text-[#12213a]">
           Alunos cadastrados
         </h2>
 
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-[#526173]">
           {students.length} {students.length === 1 ? "aluno" : "alunos"} na
           listagem.
         </p>
@@ -129,7 +129,7 @@ export function StudentsPage() {
                   <TableCell align="right">
                     <Link
                       to={`/coordinator/students/${student.id}`}
-                      className="inline-flex min-h-9 items-center rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+                      className="inline-flex min-h-9 items-center rounded-lg bg-[#17324d] px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-slate-900/10 transition hover:bg-[#214666]"
                     >
                       Gerenciar notas
                     </Link>

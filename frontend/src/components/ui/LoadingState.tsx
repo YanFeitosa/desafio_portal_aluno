@@ -14,7 +14,7 @@ export function LoadingState({
   const content = (
     <div
       className={[
-        "flex items-center gap-3 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600",
+        "flex items-center gap-3 rounded-lg border border-[#d8e1ea] bg-[#f6f9fb] px-4 py-3 text-sm text-[#526173]",
         className,
       ]
         .filter(Boolean)
@@ -23,7 +23,7 @@ export function LoadingState({
     >
       <span
         aria-hidden="true"
-        className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"
+        className="h-4 w-4 animate-spin rounded-full border-2 border-[#c8d3df] border-t-[#17324d]"
       />
       <span>{message}</span>
     </div>
@@ -31,7 +31,7 @@ export function LoadingState({
 
   if (fullPage) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
+      <main className="flex min-h-screen items-center justify-center px-4">
         {content}
       </main>
     );

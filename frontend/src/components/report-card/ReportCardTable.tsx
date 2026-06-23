@@ -29,14 +29,18 @@ function formatScore(score: number | null) {
 
 function getStatusClassName(status: ReportCardSubjectStatus) {
   if (status === "Aprovado") {
-    return "bg-emerald-50 text-emerald-700";
+    return "border border-[#cfe0d9] bg-[#eef7f2] text-[#2f6f5e]";
   }
 
   if (status === "Reprovado") {
-    return "bg-red-50 text-red-700";
+    return "border border-red-100 bg-red-50 text-red-700";
   }
 
-  return "bg-slate-100 text-slate-700";
+  return "border border-[#d8e1ea] bg-[#f4f8fa] text-[#526173]";
+}
+
+function getGradeCountLabel(count: number) {
+  return count === 1 ? "1 avaliação registrada" : `${count} avaliações registradas`;
 }
 
 export function ReportCardTable({ subjects }: ReportCardTableProps) {
@@ -44,23 +48,21 @@ export function ReportCardTable({ subjects }: ReportCardTableProps) {
     <div className="space-y-4">
       {subjects.map((subject) => (
         <Card key={subject.id} className="overflow-hidden" padding="none">
-          <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 border-b border-[#d8e1ea] p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-slate-900">
+              <h2 className="text-lg font-semibold text-[#12213a]">
                 {subject.name}
               </h2>
 
-              <p className="mt-1 text-sm text-slate-500">
-                {subject.grades.length} avaliação
-                {subject.grades.length === 1 ? "" : "ões"} registrada
-                {subject.grades.length === 1 ? "" : "s"}
+              <p className="mt-1 text-sm text-[#66768a]">
+                {getGradeCountLabel(subject.grades.length)}
               </p>
             </div>
 
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <p className="text-xs text-slate-500">Média</p>
-                <strong className="text-lg text-slate-900">
+                <p className="text-xs font-medium text-[#66768a]">Média</p>
+                <strong className="text-lg text-[#12213a]">
                   {formatScore(subject.average)}
                 </strong>
               </div>

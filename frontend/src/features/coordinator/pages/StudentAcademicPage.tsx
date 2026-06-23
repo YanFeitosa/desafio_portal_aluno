@@ -241,22 +241,22 @@ export function StudentAcademicPage() {
           <>
             <Link
               to="/coordinator/students"
-              className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
+              className="text-sm font-semibold text-[#54708c] transition hover:text-[#17324d]"
             >
               Voltar para alunos
             </Link>
 
-            <div className="mt-3 grid gap-3 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600 sm:grid-cols-2">
+            <div className="mt-3 grid gap-3 rounded-lg border border-[#d8e1ea] bg-[#f6f9fb] px-4 py-3 text-sm text-[#526173] sm:grid-cols-2">
               <p>
                 E-mail:{" "}
-                <strong className="font-semibold text-slate-900">
+                <strong className="font-semibold text-[#12213a]">
                   {student.user.email}
                 </strong>
               </p>
 
               <p>
                 Matrícula:{" "}
-                <strong className="font-semibold text-slate-900">
+                <strong className="font-semibold text-[#12213a]">
                   {student.registrationNumber}
                 </strong>
               </p>
@@ -270,8 +270,8 @@ export function StudentAcademicPage() {
           className={[
             "mb-6 rounded-lg px-4 py-3 text-sm",
             feedback.type === "success"
-              ? "bg-emerald-50 text-emerald-700"
-              : "bg-red-50 text-red-700",
+              ? "border border-[#cfe0d9] bg-[#eef7f2] text-[#2f6f5e]"
+              : "border border-red-100 bg-red-50 text-red-700",
           ].join(" ")}
         >
           {feedback.message}
@@ -297,13 +297,13 @@ export function StudentAcademicPage() {
 
             return (
               <Card key={enrollment.id} className="overflow-hidden" padding="none">
-                <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex flex-col gap-3 border-b border-[#d8e1ea] p-5 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <h2 className="text-lg font-semibold text-slate-900">
+                    <h2 className="text-lg font-semibold text-[#12213a]">
                       {enrollment.subject.name}
                     </h2>
 
-                    <p className="mt-1 text-sm text-slate-500">
+                    <p className="mt-1 text-sm text-[#66768a]">
                       {enrollment.grades.length}{" "}
                       {enrollment.grades.length === 1
                         ? "avaliação registrada"
@@ -354,7 +354,7 @@ export function StudentAcademicPage() {
                       <TableBody>
                         {enrollment.grades.map((grade) => (
                           <tr key={grade.id}>
-                            <TableCell className="text-slate-700">
+                            <TableCell className="text-[#526173]">
                               {grade.evaluationName}
                             </TableCell>
                             <TableCell align="right" strong>

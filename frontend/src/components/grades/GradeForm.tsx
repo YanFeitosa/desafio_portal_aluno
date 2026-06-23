@@ -95,13 +95,13 @@ export function GradeForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4"
+      className="mt-4 rounded-lg border border-[#d8e1ea] bg-[#f6f9fb] p-4"
     >
       <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_140px]">
         <div>
           <label
             htmlFor="evaluation-name"
-            className="text-sm font-medium text-slate-700"
+            className="text-sm font-semibold text-[#24364f]"
           >
             Avaliação
           </label>
@@ -117,7 +117,7 @@ export function GradeForm({
                 evaluationName: event.target.value,
               }))
             }
-            className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-900"
+            className="mt-1 w-full rounded-lg border border-[#c8d3df] bg-white px-3 py-2 text-[#12213a] outline-none transition placeholder:text-slate-400 focus:border-[#17324d] focus:ring-2 focus:ring-[#17324d]/10"
             placeholder="Ex.: Prova 1"
           />
 
@@ -129,7 +129,10 @@ export function GradeForm({
         </div>
 
         <div>
-          <label htmlFor="score" className="text-sm font-medium text-slate-700">
+          <label
+            htmlFor="score"
+            className="text-sm font-semibold text-[#24364f]"
+          >
             Nota
           </label>
 
@@ -146,7 +149,7 @@ export function GradeForm({
                 score: event.target.value,
               }))
             }
-            className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-slate-900"
+            className="mt-1 w-full rounded-lg border border-[#c8d3df] bg-white px-3 py-2 text-[#12213a] outline-none transition focus:border-[#17324d] focus:ring-2 focus:ring-[#17324d]/10"
           />
 
           {errors.score && (

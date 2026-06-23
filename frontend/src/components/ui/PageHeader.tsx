@@ -14,13 +14,13 @@ export function PageHeader({
   title,
 }: PageHeaderProps) {
   return (
-    <header className="mb-6 border-b border-slate-200 pb-5">
+    <header className="mb-6 border-b border-[#d8e1ea] pb-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
+          <h1 className="text-2xl font-bold text-[#12213a]">{title}</h1>
 
           {description && (
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-[#526173]">
               {description}
             </p>
           )}

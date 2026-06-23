@@ -25,7 +25,11 @@ export function Table({
   ...props
 }: TableProps) {
   return (
-    <div className={["overflow-x-auto", containerClassName].filter(Boolean).join(" ")}>
+    <div
+      className={["overflow-x-auto", containerClassName]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <table
         className={["w-full border-collapse text-left text-sm", className]
           .filter(Boolean)
@@ -44,7 +48,7 @@ export function TableHead({
 }: HTMLAttributes<HTMLTableSectionElement>) {
   return (
     <thead
-      className={["bg-slate-50 text-slate-600", className]
+      className={["bg-[#f4f8fa] text-[#526173]", className]
         .filter(Boolean)
         .join(" ")}
       {...props}
@@ -58,7 +62,7 @@ export function TableBody({
 }: HTMLAttributes<HTMLTableSectionElement>) {
   return (
     <tbody
-      className={["divide-y divide-slate-100", className]
+      className={["divide-y divide-[#edf2f6]", className]
         .filter(Boolean)
         .join(" ")}
       {...props}
@@ -74,7 +78,7 @@ export function TableHeaderCell({
   return (
     <th
       className={[
-        "px-4 py-3 font-medium",
+        "px-4 py-3 font-semibold",
         align === "right" ? "text-right" : "",
         className,
       ]
@@ -94,9 +98,9 @@ export function TableCell({
   return (
     <td
       className={[
-        "px-4 py-3 text-slate-600",
+        "px-4 py-3 text-[#526173]",
         align === "right" ? "text-right" : "",
-        strong ? "font-medium text-slate-900" : "",
+        strong ? "font-semibold text-[#12213a]" : "",
         className,
       ]
         .filter(Boolean)
