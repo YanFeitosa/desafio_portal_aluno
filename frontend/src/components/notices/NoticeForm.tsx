@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { SyntheticEvent } from "react";
 import type { CreateNoticeRequest } from "../../features/notices/types";
+import { Button } from "../ui";
 
 type NoticeFormValues = CreateNoticeRequest;
 
@@ -127,23 +128,23 @@ export function NoticeForm({
       </div>
 
       <div className="flex flex-col gap-2 sm:flex-row">
-        <button
+        <Button
           type="submit"
-          disabled={isSubmitting}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+          isLoading={isSubmitting}
+          loadingLabel="Salvando..."
         >
-          {isSubmitting ? "Salvando..." : submitLabel}
-        </button>
+          {submitLabel}
+        </Button>
 
         {onCancel && (
-          <button
+          <Button
             type="button"
+            variant="secondary"
             onClick={onCancel}
             disabled={isSubmitting}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
           >
             Cancelar edição
-          </button>
+          </Button>
         )}
       </div>
     </form>

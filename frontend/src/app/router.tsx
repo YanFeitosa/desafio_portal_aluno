@@ -49,6 +49,10 @@ export const router = createBrowserRouter([
                     element: <ManageNoticesPage />,
                   },
                   {
+                    path: "coordinator/grades",
+                    element: <StudentsPage />,
+                  },
+                  {
                     path: "coordinator/students",
                     element: <StudentsPage />,
                   },

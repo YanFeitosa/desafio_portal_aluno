@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { GradeForm } from "../../../components/grades/GradeForm";
+import {
+  Button,
+  Card,
+  EmptyState,
+  ErrorState,
+  LoadingState,
+  PageHeader,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+} from "../../../components/ui";
 import { createGrade, updateGrade } from "../../grades/services/gradeService";
 import type { GradeFormValues } from "../../grades/types";
 import {
@@ -162,83 +175,76 @@ export function StudentAcademicPage() {
 
   if (hasInvalidStudentId) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow">
-        <h1 className="text-2xl font-bold text-slate-900">
-          Gestão acadêmica
-        </h1>
-
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-          Aluno inválido.
-        </p>
+      <section>
+        <PageHeader title="Gestão acadêmica" />
+        <Card>
+          <ErrorState title="Aluno inválido" message="Aluno inválido." />
+        </Card>
       </section>
     );
   }
 
   if (isLoading) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow">
-        <h1 className="text-2xl font-bold text-slate-900">
-          Gestão acadêmica
-        </h1>
-
-        <p className="mt-4 text-sm text-slate-600">
-          Carregando dados acadêmicos...
-        </p>
+      <section>
+        <PageHeader title="Gestão acadêmica" />
+        <Card>
+          <LoadingState message="Carregando dados acadêmicos..." />
+        </Card>
       </section>
     );
   }
 
   if (error) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow">
-        <h1 className="text-2xl font-bold text-slate-900">
-          Gestão acadêmica
-        </h1>
-
-        <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error}
-        </p>
-
-        <button
-          type="button"
-          onClick={() => void loadAcademicData()}
-          className="mt-4 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-        >
-          Tentar novamente
-        </button>
+      <section>
+        <PageHeader title="Gestão acadêmica" />
+        <Card>
+          <ErrorState
+            message={error}
+            onRetry={() => void loadAcademicData()}
+          />
+        </Card>
       </section>
     );
   }
 
   if (!student) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow">
-        <h1 className="text-2xl font-bold text-slate-900">
-          Gestão acadêmica
-        </h1>
-
-        <p className="mt-4 text-sm text-slate-600">
-          Nenhum aluno encontrado.
-        </p>
+      <section>
+        <PageHeader title="Gestão acadêmica" />
+        <Card>
+          <EmptyState
+            title="Nenhum aluno encontrado"
+            message="Nenhum aluno encontrado."
+          />
+        </Card>
       </section>
     );
   }
 
   return (
     <section>
-      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-6 shadow">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
+      <PageHeader
+        title={student.user.name}
+        actions={
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => void loadAcademicData()}
+            disabled={isLoading}
+          >
+            Recarregar
+          </Button>
+        }
+        details={
+          <>
             <Link
               to="/coordinator/students"
               className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
             >
               Voltar para alunos
             </Link>
-
-            <h1 className="mt-3 text-2xl font-bold text-slate-900">
-              {student.user.name}
-            </h1>
 
             <div className="mt-3 grid gap-3 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600 sm:grid-cols-2">
               <p>
@@ -255,18 +261,9 @@ export function StudentAcademicPage() {
                 </strong>
               </p>
             </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => void loadAcademicData()}
-            disabled={isLoading}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            Recarregar
-          </button>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       {feedback && (
         <p
@@ -282,11 +279,12 @@ export function StudentAcademicPage() {
       )}
 
       {enrollments.length === 0 ? (
-        <div className="rounded-xl border border-slate-200 bg-white p-6 text-center shadow">
-          <p className="text-sm text-slate-600">
-            Nenhuma disciplina encontrada para este aluno.
-          </p>
-        </div>
+        <Card>
+          <EmptyState
+            title="Nenhuma disciplina encontrada"
+            message="Nenhuma disciplina encontrada para este aluno."
+          />
+        </Card>
       ) : (
         <div className="space-y-4">
           {enrollments.map((enrollment) => {
@@ -298,10 +296,7 @@ export function StudentAcademicPage() {
               activeGradeForm.enrollmentId === enrollment.id;
 
             return (
-              <section
-                key={enrollment.id}
-                className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow"
-              >
+              <Card key={enrollment.id} className="overflow-hidden" padding="none">
                 <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <h2 className="text-lg font-semibold text-slate-900">
@@ -316,7 +311,7 @@ export function StudentAcademicPage() {
                     </p>
                   </div>
 
-                  <button
+                  <Button
                     type="button"
                     onClick={() =>
                       setActiveGradeForm({
@@ -325,10 +320,9 @@ export function StudentAcademicPage() {
                       })
                     }
                     disabled={isSubmitting}
-                    className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     Lançar nota
-                  </button>
+                  </Button>
                 </div>
 
                 <div className="p-5">
@@ -343,60 +337,54 @@ export function StudentAcademicPage() {
                   )}
 
                   {enrollment.grades.length === 0 ? (
-                    <p className="rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600">
-                      Nenhuma nota registrada para esta disciplina.
-                    </p>
+                    <EmptyState
+                      title="Sem notas registradas"
+                      message="Nenhuma nota registrada para esta disciplina."
+                    />
                   ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full border-collapse text-left text-sm">
-                        <thead className="bg-slate-50 text-slate-600">
-                          <tr>
-                            <th className="px-4 py-3 font-medium">
-                              Avaliação
-                            </th>
-                            <th className="px-4 py-3 text-right font-medium">
-                              Nota
-                            </th>
-                            <th className="px-4 py-3 text-right font-medium">
-                              Ações
-                            </th>
-                          </tr>
-                        </thead>
+                    <Table>
+                      <TableHead>
+                        <tr>
+                          <TableHeaderCell>Avaliação</TableHeaderCell>
+                          <TableHeaderCell align="right">Nota</TableHeaderCell>
+                          <TableHeaderCell align="right">Ações</TableHeaderCell>
+                        </tr>
+                      </TableHead>
 
-                        <tbody className="divide-y divide-slate-100">
-                          {enrollment.grades.map((grade) => (
-                            <tr key={grade.id}>
-                              <td className="px-4 py-3 text-slate-700">
-                                {grade.evaluationName}
-                              </td>
-                              <td className="px-4 py-3 text-right font-medium text-slate-900">
-                                {formatScore(grade.score)}
-                              </td>
-                              <td className="px-4 py-3 text-right">
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setActiveGradeForm({
-                                      mode: "edit",
-                                      enrollmentId: enrollment.id,
-                                      gradeId: grade.id,
-                                      initialValues: {
-                                        evaluationName: grade.evaluationName,
-                                        score: Number(grade.score),
-                                      },
-                                    })
-                                  }
-                                  disabled={isSubmitting}
-                                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
-                                >
-                                  Editar
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                      <TableBody>
+                        {enrollment.grades.map((grade) => (
+                          <tr key={grade.id}>
+                            <TableCell className="text-slate-700">
+                              {grade.evaluationName}
+                            </TableCell>
+                            <TableCell align="right" strong>
+                              {formatScore(grade.score)}
+                            </TableCell>
+                            <TableCell align="right">
+                              <Button
+                                type="button"
+                                variant="secondary"
+                                size="sm"
+                                onClick={() =>
+                                  setActiveGradeForm({
+                                    mode: "edit",
+                                    enrollmentId: enrollment.id,
+                                    gradeId: grade.id,
+                                    initialValues: {
+                                      evaluationName: grade.evaluationName,
+                                      score: Number(grade.score),
+                                    },
+                                  })
+                                }
+                                disabled={isSubmitting}
+                              >
+                                Editar
+                              </Button>
+                            </TableCell>
+                          </tr>
+                        ))}
+                      </TableBody>
+                    </Table>
                   )}
 
                   {isEditingThisEnrollment && activeGradeForm.mode === "edit" && (
@@ -410,7 +398,7 @@ export function StudentAcademicPage() {
                     />
                   )}
                 </div>
-              </section>
+              </Card>
             );
           })}
         </div>

@@ -1,5 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  Button,
+  Card,
+  EmptyState,
+  ErrorState,
+  LoadingState,
+  PageHeader,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+} from "../../../components/ui";
 import { listStudents } from "../../students/services/studentService";
 import type { Student } from "../../students/types";
 
@@ -50,30 +63,23 @@ export function StudentsPage() {
 
   return (
     <section>
-      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-6 shadow">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">
-              Gestão acadêmica
-            </h1>
-
-            <p className="mt-2 text-slate-600">
-              Selecione um aluno para lançar ou atualizar notas por disciplina.
-            </p>
-          </div>
-
-          <button
+      <PageHeader
+        title="Gestão acadêmica"
+        description="Selecione um aluno para lançar ou atualizar notas por disciplina."
+        actions={
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => void loadStudents()}
-            disabled={isLoading}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+            isLoading={isLoading}
+            loadingLabel="Recarregando..."
           >
-            {isLoading ? "Recarregando..." : "Recarregar"}
-          </button>
-        </div>
-      </div>
+            Recarregar
+          </Button>
+        }
+      />
 
-      <section className="rounded-xl border border-slate-200 bg-white p-6 shadow">
+      <Card>
         <h2 className="text-lg font-semibold text-slate-900">
           Alunos cadastrados
         </h2>
@@ -84,64 +90,56 @@ export function StudentsPage() {
         </p>
 
         {isLoading && (
-          <p className="mt-5 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600">
-            Carregando alunos...
-          </p>
+          <LoadingState className="mt-5" message="Carregando alunos..." />
         )}
 
         {!isLoading && error && (
-          <p className="mt-5 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </p>
+          <ErrorState
+            className="mt-5"
+            message={error}
+            onRetry={() => void loadStudents()}
+          />
         )}
 
         {!isLoading && !error && students.length === 0 && (
-          <div className="mt-5 rounded-lg border border-dashed border-slate-300 p-6 text-center">
-            <p className="text-sm text-slate-600">
-              Nenhum aluno encontrado.
-            </p>
-          </div>
+          <EmptyState
+            className="mt-5"
+            title="Nenhum aluno encontrado"
+            message="Nenhum aluno encontrado."
+          />
         )}
 
         {!isLoading && !error && students.length > 0 && (
-          <div className="mt-5 overflow-x-auto">
-            <table className="w-full border-collapse text-left text-sm">
-              <thead className="bg-slate-50 text-slate-600">
-                <tr>
-                  <th className="px-4 py-3 font-medium">Aluno</th>
-                  <th className="px-4 py-3 font-medium">E-mail</th>
-                  <th className="px-4 py-3 font-medium">Matrícula</th>
-                  <th className="px-4 py-3 text-right font-medium">Ações</th>
-                </tr>
-              </thead>
+          <Table containerClassName="mt-5">
+            <TableHead>
+              <tr>
+                <TableHeaderCell>Aluno</TableHeaderCell>
+                <TableHeaderCell>E-mail</TableHeaderCell>
+                <TableHeaderCell>Matrícula</TableHeaderCell>
+                <TableHeaderCell align="right">Ações</TableHeaderCell>
+              </tr>
+            </TableHead>
 
-              <tbody className="divide-y divide-slate-100">
-                {students.map((student) => (
-                  <tr key={student.id}>
-                    <td className="px-4 py-3 font-medium text-slate-900">
-                      {student.user.name}
-                    </td>
-                    <td className="px-4 py-3 text-slate-600">
-                      {student.user.email}
-                    </td>
-                    <td className="px-4 py-3 text-slate-600">
-                      {student.registrationNumber}
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <Link
-                        to={`/coordinator/students/${student.id}`}
-                        className="inline-flex rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
-                      >
-                        Gerenciar notas
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+            <TableBody>
+              {students.map((student) => (
+                <tr key={student.id}>
+                  <TableCell strong>{student.user.name}</TableCell>
+                  <TableCell>{student.user.email}</TableCell>
+                  <TableCell>{student.registrationNumber}</TableCell>
+                  <TableCell align="right">
+                    <Link
+                      to={`/coordinator/students/${student.id}`}
+                      className="inline-flex min-h-9 items-center rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+                    >
+                      Gerenciar notas
+                    </Link>
+                  </TableCell>
+                </tr>
+              ))}
+            </TableBody>
+          </Table>
         )}
-      </section>
+      </Card>
     </section>
   );
 }

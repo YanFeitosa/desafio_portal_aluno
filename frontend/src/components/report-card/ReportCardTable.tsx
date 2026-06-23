@@ -2,6 +2,15 @@ import type {
   ReportCardSubject,
   ReportCardSubjectStatus,
 } from "../../features/report-card/types";
+import {
+  Card,
+  EmptyState,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeaderCell,
+} from "../ui";
 
 type ReportCardTableProps = {
   subjects: ReportCardSubject[];
@@ -34,10 +43,7 @@ export function ReportCardTable({ subjects }: ReportCardTableProps) {
   return (
     <div className="space-y-4">
       {subjects.map((subject) => (
-        <section
-          key={subject.id}
-          className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
-        >
+        <Card key={subject.id} className="overflow-hidden" padding="none">
           <div className="flex flex-col gap-3 border-b border-slate-200 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold text-slate-900">
@@ -71,37 +77,38 @@ export function ReportCardTable({ subjects }: ReportCardTableProps) {
 
           {subject.grades.length === 0 ? (
             <div className="p-5">
-              <p className="text-sm text-slate-600">
-                Nenhuma nota registrada para esta disciplina.
-              </p>
+              <EmptyState
+                title="Sem notas registradas"
+                message="Nenhuma nota registrada para esta disciplina."
+              />
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-left text-sm">
-                <thead className="bg-slate-50 text-slate-600">
-                  <tr>
-                    <th className="px-5 py-3 font-medium">Avaliação</th>
-                    <th className="px-5 py-3 text-right font-medium">Nota</th>
+            <Table>
+              <TableHead>
+                <tr>
+                  <TableHeaderCell className="px-5">Avaliação</TableHeaderCell>
+                  <TableHeaderCell className="px-5" align="right">
+                    Nota
+                  </TableHeaderCell>
+                </tr>
+              </TableHead>
+
+              <TableBody>
+                {subject.grades.map((grade) => (
+                  <tr key={grade.id}>
+                    <TableCell className="px-5 text-slate-700">
+                      {grade.evaluationName}
+                    </TableCell>
+
+                    <TableCell className="px-5" align="right" strong>
+                      {formatScore(grade.score)}
+                    </TableCell>
                   </tr>
-                </thead>
-
-                <tbody className="divide-y divide-slate-100">
-                  {subject.grades.map((grade) => (
-                    <tr key={grade.id}>
-                      <td className="px-5 py-3 text-slate-700">
-                        {grade.evaluationName}
-                      </td>
-
-                      <td className="px-5 py-3 text-right font-medium text-slate-900">
-                        {formatScore(grade.score)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </TableBody>
+            </Table>
           )}
-        </section>
+        </Card>
       ))}
     </div>
   );

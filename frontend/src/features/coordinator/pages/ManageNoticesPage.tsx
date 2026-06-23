@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { NoticeForm } from "../../../components/notices/NoticeForm";
 import {
+  Button,
+  Card,
+  EmptyState,
+  ErrorState,
+  LoadingState,
+  PageHeader,
+} from "../../../components/ui";
+import {
   createNotice,
   deleteNotice,
   listNotices,
@@ -169,28 +177,21 @@ export function ManageNoticesPage() {
 
   return (
     <section>
-      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-6 shadow">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">
-              Avisos institucionais
-            </h1>
-
-            <p className="mt-2 text-slate-600">
-              Publique e mantenha os comunicados exibidos aos alunos.
-            </p>
-          </div>
-
-          <button
+      <PageHeader
+        title="Avisos institucionais"
+        description="Publique e mantenha os comunicados exibidos aos alunos."
+        actions={
+          <Button
             type="button"
+            variant="secondary"
             onClick={() => void loadNotices()}
-            disabled={isLoading}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+            isLoading={isLoading}
+            loadingLabel="Recarregando..."
           >
-            {isLoading ? "Recarregando..." : "Recarregar"}
-          </button>
-        </div>
-      </div>
+            Recarregar
+          </Button>
+        }
+      />
 
       {feedback && (
         <p
@@ -206,7 +207,7 @@ export function ManageNoticesPage() {
       )}
 
       <div className="grid gap-6 lg:grid-cols-[380px_minmax(0,1fr)]">
-        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow">
+        <Card>
           <h2 className="text-lg font-semibold text-slate-900">
             {editingNotice ? "Editar aviso" : "Novo aviso"}
           </h2>
@@ -227,9 +228,9 @@ export function ManageNoticesPage() {
               onCancel={editingNotice ? handleCancelEditing : undefined}
             />
           </div>
-        </section>
+        </Card>
 
-        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow">
+        <Card>
           <div className="mb-5">
             <h2 className="text-lg font-semibold text-slate-900">
               Avisos publicados
@@ -241,24 +242,20 @@ export function ManageNoticesPage() {
             </p>
           </div>
 
-          {isLoading && (
-            <p className="rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600">
-              Carregando avisos...
-            </p>
-          )}
+          {isLoading && <LoadingState message="Carregando avisos..." />}
 
           {!isLoading && listError && (
-            <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-              {listError}
-            </p>
+            <ErrorState
+              message={listError}
+              onRetry={() => void loadNotices()}
+            />
           )}
 
           {!isLoading && !listError && notices.length === 0 && (
-            <div className="rounded-lg border border-dashed border-slate-300 p-6 text-center">
-              <p className="text-sm text-slate-600">
-                Nenhum aviso publicado até o momento.
-              </p>
-            </div>
+            <EmptyState
+              title="Nenhum aviso publicado"
+              message="Nenhum aviso publicado até o momento."
+            />
           )}
 
           {!isLoading && !listError && notices.length > 0 && (
@@ -266,7 +263,7 @@ export function ManageNoticesPage() {
               {notices.map((notice) => (
                 <article
                   key={notice.id}
-                  className="rounded-xl border border-slate-200 p-5"
+                  className="rounded-lg border border-slate-200 p-5"
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
@@ -281,24 +278,25 @@ export function ManageNoticesPage() {
                     </div>
 
                     <div className="flex gap-2">
-                      <button
+                      <Button
                         type="button"
+                        variant="secondary"
+                        size="sm"
                         onClick={() => setEditingNotice(notice)}
-                        className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
                       >
                         Editar
-                      </button>
+                      </Button>
 
-                      <button
+                      <Button
                         type="button"
+                        variant="destructive"
+                        size="sm"
                         onClick={() => void handleDeleteNotice(notice)}
-                        disabled={deletingNoticeId === notice.id}
-                        className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+                        isLoading={deletingNoticeId === notice.id}
+                        loadingLabel="Excluindo..."
                       >
-                        {deletingNoticeId === notice.id
-                          ? "Excluindo..."
-                          : "Excluir"}
-                      </button>
+                        Excluir
+                      </Button>
                     </div>
                   </div>
 
@@ -309,7 +307,7 @@ export function ManageNoticesPage() {
               ))}
             </div>
           )}
-        </section>
+        </Card>
       </div>
     </section>
   );
