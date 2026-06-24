@@ -15,7 +15,7 @@ MVP fullstack para um portal academico com dois perfis: Coordenacao e Aluno.
 ```bash
 cd backend
 cp .env.example .env
-docker compose up -d
+docker compose up -d --wait
 npm install
 npm run prisma:migrate
 npm run prisma:seed
