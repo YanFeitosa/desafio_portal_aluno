@@ -7,10 +7,12 @@ import {
   login as loginRequest,
 } from "./services/authService";
 import type { LoginRequest, User } from "./types";
+import { LoadingState } from "../../components/ui";
 import {
   getAuthToken,
   removeAuthToken,
   saveAuthToken,
+  subscribeToSessionExpired,
 } from "../../lib/storage";
 
 type AuthProviderProps = {
@@ -39,6 +41,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   useEffect(() => {
+    return subscribeToSessionExpired(() => {
+      removeAuthToken();
+      setUser(null);
+      setIsLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
     async function loadAuthenticatedUser() {
       const token = getAuthToken();
 
@@ -60,6 +70,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     loadAuthenticatedUser();
   }, []);
+
+  if (isLoading) {
+    return <LoadingState fullPage message="Carregando sessão..." />;
+  }
 
   return (
     <AuthContext.Provider

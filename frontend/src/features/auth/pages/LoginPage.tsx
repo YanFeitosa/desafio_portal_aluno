@@ -1,17 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../../components/ui";
+import { Button, LoadingState } from "../../../components/ui";
 import { useAuth } from "../useAuth";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    if (user.role === "COORDINATOR") {
+      navigate("/coordinator", { replace: true });
+      return;
+    }
+
+    navigate("/student", { replace: true });
+  }, [navigate, user]);
+
+  if (user) {
+    return <LoadingState fullPage message="Redirecionando..." />;
+  }
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
     event.preventDefault();
