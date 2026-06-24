@@ -31,8 +31,8 @@ e o JSON OpenAPI fica em `http://localhost:3333/docs/json`.
 ```bash
 cd frontend
 cp .env.example .env
-npm install
-npm run dev
+npm.cmd install
+npm.cmd run dev
 ```
 
 O frontend deve rodar em `http://localhost:5173`, que é a origem configurada em `backend/.env.example` (`CORS_ORIGIN`).
